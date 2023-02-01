@@ -1,24 +1,29 @@
-#Find all files in a file. 
-$files = Get-ChildItem -Directory | select-object Name
+$ConfirmChoice = $null
+[int]$DaIndex = 0
+$UserOptions = get-childitem
+$DaChoice = $null
 
-#Stick each file into an array
-$UserOptions = @()
 
-foreach ($file in $files)
-{
-    $UserOptions += $file
-}
+	Foreach ($Option in $UserOptions) {
+    	Write-Host "Press $DaIndex for $Option"
+		$DaIndex += 1
+	} 
 
-#Print out avalible files on the screen
-$daIndex = 0
-Foreach ($Option in $UserOptions) {
 
-Write-Host $UserOptions[$daIndex]
-$daIndex += 1
-Write-Host $daIndex
-} 
+while( $ConfirmChoice -ne 'y' ){
+    [int]$DaChoice = Read-Host -Prompt 'Please press the number for the file you would like a report on' -ErrorAction:SilentlyContinue
+    $DaChoice.Length
+    $UserOptions.Length
+    if(!($DaChoice -match "^\d+$") ){
+        Write-Warning "$DaChoice is not a valid option. Please try again."
+        continue
+        }
 
-#Ask the user to pick one
+    if($DaChoice > $UserOptions.Length){
+        Write-Warning "You a hoe"
+        continue
+        }
+       
 
-#Create report of all fles. 
-#Get-ChildItem -Recurse
+    $ConfirmChoice = Read-Host -Prompt "The directory you want a report on is ""$($UserOptions[$DaChoice]) ""Is this correct? (y/n)"
+    }
