@@ -1,8 +1,18 @@
 $ConfirmChoice = $null
 [int]$DaIndex = 0
 $UserOptions = @()
-$UserOptions = get-childitem -Directory
+
+
+
+###YOU MUST FILL OUT THE HOME DIRECTORY. This program is only going to check this file path. It is currently left blank###
+$HomeDirectory = 
+
+
+$UserOptions = get-childitem $HomeDirectory -Directory
 $DaChoice = $null
+$date = get-date -Format "MM.dd.yyyy HH.mm.ss"
+$date = "DirectoryTreeLayout " + $date
+
 
 Write-Host """
   _____  _               _                                                    
@@ -21,7 +31,7 @@ Write-Host """
 Write-Host "By Cody Smith`n`n"
 
 Write-Host """Welcome to the Directory Tree Layout tool. This program is a user 
-friendly version of the powershell cmdlet Get-Childitem. Get-Childitem gets the 
+friendly version of the powershell cmdley Get-Childitem. Get-Childitem gets the 
 items in one or more specified locations. If the item is a container (Folder), 
 it gets the items inside the container, known as child items 
 
@@ -57,9 +67,8 @@ while( $ConfirmChoice -ne 'y' ){
     $ConfirmChoice = Read-Host -Prompt "The directory you want a report on is ""$($UserOptions[$DaChoice]) ""Is this correct? (y/n)"
     }
 
-$date = get-date -Format "MM.dd.yyyy HH.mm.ss"
-$date = "DirectoryTreeLayout " + $date
-Get-ChildItem $UserOptions[$DaChoice] -Recurse | Out-File -FilePath ".\$date.txt" -Force
-Invoke-Item ".\$date.txt"
+$FinalFile = $HomeDirectory+'\'+$UserOptions[$DaChoice]
+Get-ChildItem $FinalFile -Recurse | Out-File -FilePath "$HomeDirectory\$date.txt" -Force
+Invoke-Item "$HomeDirectory\$date.txt"
 
 Read-Host -Prompt "`n`nThe program has finished. The file is called .\$date.txt. Please press enter to close this window."
